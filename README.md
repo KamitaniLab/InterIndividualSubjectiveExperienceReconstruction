@@ -22,7 +22,7 @@ Haibao Wang, Fan L. Cheng, Shuntaro C. Aoki, Misato Tanaka, Yoshihiro Nagano, Hi
 
 <div align="center">
 
-  <a href="https://github.com/HaibaoWang/InterIndividualSubjectiveExperienceReconstruction/blob/main/">
+  <a href="https://github.com/KamitaniLab/InterIndividualSubjectiveExperienceReconstruction/blob/main/">
     <img src="figure/NCC.png" width="90%">
   </a> 
 
@@ -30,16 +30,16 @@ Haibao Wang, Fan L. Cheng, Shuntaro C. Aoki, Misato Tanaka, Yoshihiro Nagano, Hi
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/HaibaoWang/InterIndividualSubjectiveExperienceReconstruction.svg?style=for-the-badge
-[contributors-url]: https://github.com/HaibaoWang/InterIndividualSubjectiveExperienceReconstruction/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/HaibaoWang/InterIndividualSubjectiveExperienceReconstruction.svg?style=for-the-badge
-[forks-url]: https://github.com/HaibaoWang/InterIndividualSubjectiveExperienceReconstruction/forks
-[stars-shield]: https://img.shields.io/github/stars/HaibaoWang/InterIndividualSubjectiveExperienceReconstruction.svg?style=for-the-badge
-[stars-url]: https://github.com/HaibaoWang/InterIndividualSubjectiveExperienceReconstruction/stargazers
-[issues-shield]: https://img.shields.io/github/issues/HaibaoWang/InterIndividualSubjectiveExperienceReconstruction.svg?style=for-the-badge
-[issues-url]: https://github.com/HaibaoWang/InterIndividualSubjectiveExperienceReconstruction/issues
-[license-shield]: https://img.shields.io/github/license/github_username/repo_name.svg?style=for-the-badge
-[license-url]: https://github.com/github_username/repo_name/blob/master/LICENSE.txt
+[contributors-shield]: https://img.shields.io/github/contributors/KamitaniLab/InterIndividualSubjectiveExperienceReconstruction.svg?style=for-the-badge
+[contributors-url]: https://github.com/KamitaniLab/InterIndividualSubjectiveExperienceReconstruction/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/KamitaniLab/InterIndividualSubjectiveExperienceReconstruction.svg?style=for-the-badge
+[forks-url]: https://github.com/KamitaniLab/InterIndividualSubjectiveExperienceReconstruction/forks
+[stars-shield]: https://img.shields.io/github/stars/KamitaniLab/InterIndividualSubjectiveExperienceReconstruction.svg?style=for-the-badge
+[stars-url]: https://github.com/KamitaniLab/InterIndividualSubjectiveExperienceReconstruction/stargazers
+[issues-shield]: https://img.shields.io/github/issues/KamitaniLab/InterIndividualSubjectiveExperienceReconstruction.svg?style=for-the-badge
+[issues-url]: https://github.com/KamitaniLab/InterIndividualSubjectiveExperienceReconstruction/issues
+[license-shield]: https://img.shields.io/github/license/KamitaniLab/InterIndividualSubjectiveExperienceReconstruction.svg?style=for-the-badge
+[license-url]: https://github.com/KamitaniLab/InterIndividualSubjectiveExperienceReconstruction/blob/main/LICENSE.txt
 
 
 
@@ -144,11 +144,6 @@ To calculate raw correlations for conversion accuracy, navigate to the `conversi
   python fmri_profile_corr_content_loss.py
   ```
 
-To obtain the normalized correlations and plot the Figure 2E and 2F with the provided result, use the following command:
-```sh
-python plot_figure.py
-```
-
 #### Evaluation of reconstruction
 To quantitatively evaluate the reconstructed images, please request and download the ground truth stimulus images using this [link](https://forms.gle/ujvA34948Xg49jdn9) due to licensing restrictions. Organize the downloaded images in the following directory structure: `data/test_image/source`.
 
@@ -157,13 +152,5 @@ Then, navigate to the `identification_accuracy` directory and run:
 python recon_image_eval.py
 python recon_image_eval_dnn.py
 ```
-To plot the Figure 3F with the provided result, use the following command.
-```sh
-python plot_figure.py
-```
-
-## Citation
-
-[//]: # (Wang, H., Ho, J. K., Cheng, F. L., Aoki, S. C., Muraki, Y., Tanaka, M., Park, J.-Y., & Kamitani, Y. &#40;2025&#41;. Inter-individual and inter-site neural code conversion without shared stimuli. *Nature Computational Science, 5*, 534–546. https://doi.org/10.1038/s43588-025-00826-5)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
