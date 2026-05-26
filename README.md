@@ -1,0 +1,169 @@
+
+<!-- Improved compatibility of back to top link: See: https://github.com/othneildrew/Best-README-Template/pull/73 -->
+<a name="readme-top"></a>
+
+<!-- PROJECT SHIELDS -->
+[![Contributors][contributors-shield]][contributors-url]
+[![Forks][forks-shield]][forks-url]
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
+
+<br />
+
+<h2 align="center">Inter-individual reconstruction of subjective experience from brain activity
+</h2>
+
+  <p align="center">
+Haibao Wang, Fan L. Cheng, Shuntaro C. Aoki, Misato Tanaka, Yoshihiro Nagano, Hideki Izumi, <br>Yukiyasu Kamitani
+</p>
+
+<br>
+<br>
+
+<div align="center">
+
+  <a href="https://github.com/HaibaoWang/InterIndividualSubjectiveExperienceReconstruction/blob/main/">
+    <img src="figure/NCC.png" width="90%">
+  </a> 
+
+</div>
+
+<!-- MARKDOWN LINKS & IMAGES -->
+<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+[contributors-shield]: https://img.shields.io/github/contributors/HaibaoWang/InterIndividualSubjectiveExperienceReconstruction.svg?style=for-the-badge
+[contributors-url]: https://github.com/HaibaoWang/InterIndividualSubjectiveExperienceReconstruction/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/HaibaoWang/InterIndividualSubjectiveExperienceReconstruction.svg?style=for-the-badge
+[forks-url]: https://github.com/HaibaoWang/InterIndividualSubjectiveExperienceReconstruction/forks
+[stars-shield]: https://img.shields.io/github/stars/HaibaoWang/InterIndividualSubjectiveExperienceReconstruction.svg?style=for-the-badge
+[stars-url]: https://github.com/HaibaoWang/InterIndividualSubjectiveExperienceReconstruction/stargazers
+[issues-shield]: https://img.shields.io/github/issues/HaibaoWang/InterIndividualSubjectiveExperienceReconstruction.svg?style=for-the-badge
+[issues-url]: https://github.com/HaibaoWang/InterIndividualSubjectiveExperienceReconstruction/issues
+[license-shield]: https://img.shields.io/github/license/github_username/repo_name.svg?style=for-the-badge
+[license-url]: https://github.com/github_username/repo_name/blob/master/LICENSE.txt
+
+
+
+## Getting Started
+
+### Installation
+To begin, clone the repository on your local machine, using git clone and pasting the url of this project:
+   ```sh
+   git clone https://github.com/KamitaniLab/InterIndividualSubjectiveExperienceReconstruction.git
+   ````
+   
+### Build Environment
+
+Step1: Navigate to the base directory and create the Conda environment:
+  ```sh
+  conda env create -f env.yaml
+  ```
+Step2: Activate the environment:
+  ```sh
+  conda activate NCC
+  ```
+### Download Data
+
+To use this project, you'll need to download and organize the required data:
+- Download the training brain data for veridical perception from [Figshare](https://figshare.com/articles/dataset/Inter-individual_deep_image_reconstruction/17985578).
+- Download the test brain data for visual illusion from [Figshare](https://figshare.com/articles/dataset/Reconstructing_visual_illusory_experiences_from_human_brain_activity/23590302).
+- Download the test brain data for visual attention from [Figshare](https://figshare.com/articles/dataset/Attentionally_modulated_subjective_images_reconstructed_from_brain_activity/13474629).
+- Download the test brain data for visual imagery from [Figshare](https://figshare.com/articles/dataset/Deep_Image_Reconstruction/7033577).
+- Download the DNN features of stimuli from [Figshare](https://figshare.com/articles/dataset/Inter-individual_and_inter-site_neural_code_conversion/26860954)
+
+Alternatively, you can use the following commands to download specific data (The data will be automatically extracted and organized into the designated directory, in progress):
+ ```sh
+# In "data" directory:
+# To download the training fMRI data:
+python download.py fmri_training
+
+# Or to download the test fMRI data:
+python download.py fmri_test
+
+# download the DNN features of training images:
+python download.py stimulus_feature
+ ```
+
+### Download Pre-trained Decoders
+
+To use this project, you'll need to download the required pre-trained decoders from [Figshare](https://figshare.com/articles/dataset/Inter-individual_and_inter-site_neural_code_conversion/26860954) with the following command:
+
+```sh
+python download.py pre-trained-decoders
+```
+
+If you prefer to train the decoders yourself (approximately 2 days per subject), detailed instructions and scripts are available in the `feature-decoding` directory.
+## Usage
+
+### Train Neural Code Converters
+
+To train the neural code converters using content loss for subject pairs, navigate to the `NCC_content_loss` directory and run:
+
+```sh
+python NCC_train.py --cuda
+```
+
+* **Note**: Use the `--cuda` flag when running on a GPU server. Omit `--cuda` if training on a CPU server.
+
+Training one subject pair usually takes about 15 hours due to the large computational requirements. You can also download the pre-trained converters from [Figshare](https://figshare.com/articles/dataset/Inter-individual_and_inter-site_neural_code_conversion/26860954) with the following command:
+
+```sh
+python download.py pre-trained-converters
+```
+
+### Test Neural Code Converters
+
+#### DNN Feature Decoding
+
+To decode DNN features from converted brain activities (approximately 80 mins per subject pair), use the following commands in the corresponding directory:
+
+
+  
+  ```sh
+  python NCC_test.py --cuda
+  ```
+
+#### Image Reconstruction
+
+To reconstruct images from the decoded features:
+
+1. Navigate to the `reconstruction` directory.
+2. Follow the provided README and reconstruction demo for detailed instructions on setting up the environment and usage.
+3. Modify the directory of the decoded features in the script as needed to reconstruct images.
+
+### Quantitative Evaluation
+The quantitative evaluations are presented in terms of conversion accuracy, decoding accuracy, and identification accuracy.
+
+#### Conversion Accuracy
+To calculate raw correlations for conversion accuracy, navigate to the `conversion_accuracy` directory and run:
+
+  ```sh
+  # pattern correlation
+  python fmri_pattern_corr_content_loss.py
+  
+  # profile correlation
+  python fmri_profile_corr_content_loss.py
+  ```
+
+To obtain the normalized correlations and plot the Figure 2E and 2F with the provided result, use the following command:
+```sh
+python plot_figure.py
+```
+
+#### Evaluation of reconstruction
+To quantitatively evaluate the reconstructed images, please request and download the ground truth stimulus images using this [link](https://forms.gle/ujvA34948Xg49jdn9) due to licensing restrictions. Organize the downloaded images in the following directory structure: `data/test_image/source`.
+
+Then, navigate to the `identification_accuracy` directory and run:
+```sh
+python recon_image_eval.py
+python recon_image_eval_dnn.py
+```
+To plot the Figure 3F with the provided result, use the following command.
+```sh
+python plot_figure.py
+```
+
+## Citation
+
+[//]: # (Wang, H., Ho, J. K., Cheng, F. L., Aoki, S. C., Muraki, Y., Tanaka, M., Park, J.-Y., & Kamitani, Y. &#40;2025&#41;. Inter-individual and inter-site neural code conversion without shared stimuli. *Nature Computational Science, 5*, 534–546. https://doi.org/10.1038/s43588-025-00826-5)
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>

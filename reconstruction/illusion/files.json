@@ -1,0 +1,14 @@
+{
+    "GAN": {
+        "zip": true,
+        "save_in": "./",
+        "files": [
+            {
+                "name": "generator-GAN.zip",
+                "url": "https://figshare.com/ndownloader/files/42493692",
+                "md5sum": "c3cee21a044f2c9222e7bb19850799bd",
+                "postproc": [{"name": "unzip"}]
+            }
+        ]
+    }
+}
