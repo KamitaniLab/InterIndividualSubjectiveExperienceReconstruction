@@ -262,14 +262,11 @@ def recon_icnn_image_gd_dist(
         for i, image_label in enumerate(images):
             print("Image: " + image_label)
 
-            # Districuted computation control
-            snapshots_dir = os.path.join(
-                save_dir, "snapshots", "image-%s" % image_label)
-            if os.path.exists(snapshots_dir):
-                print("Already done or running. Skipped.")
+            # Skip images that already have a final reconstruction.
+            recon_image_normalized_file = os.path.join(save_dir, output_image_prefix + image_label + "." + output_image_ext)
+            if os.path.exists(recon_image_normalized_file):
+                print("Already done. Skipped.")
                 continue
-            else:
-                os.makedirs(snapshots_dir)
 
             # Encoder model
             encoder = model_factory(encoder_cfg.name)
@@ -373,11 +370,7 @@ def recon_icnn_image_gd_dist(
                 preproc=image_preprocess,
                 postproc=image_deprocess,
                 output_dir=save_dir,
-                save_snapshot=True,
-                snapshot_dir=snapshots_dir,
-                snapshot_interval=10,
-                snapshot_ext="jpg",
-                snapshot_postprocess=normalize_image,
+                save_snapshot=False,
                 return_loss=True,
                 device=device,
                 **opts
@@ -391,7 +384,6 @@ def recon_icnn_image_gd_dist(
             # pixels with extreme low values and 0.02% of the pixels with extreme high
             # values). And then normalise the image by mapping the pixel value to be
             # within [0,255].
-            recon_image_normalized_file = os.path.join(save_dir, output_image_prefix + image_label + "." + output_image_ext)
             PIL.Image.fromarray(normalize_image(clip_extreme(recon_image, pct=4))).save(recon_image_normalized_file)
 
     print("All done")
@@ -432,13 +424,13 @@ if __name__ == "__main__":
         features_decoders_dir = None
         subjects, rois = [None], [None]
 
-    # subjects_list = ['sub01', 'sub02','sub03', 'sub04', 'sub05']
+    # subjects_list = ['sub01', 'sub02','sub03', 'sub04']
     #
     #
     # for src, trg in itertools.permutations(subjects_list, 2):
     #     conversion = src + '_2_' + trg
     #     features_dir = os.path.join(
-    #         '/xxx/',conversion,
+    #         '../../neural_code_conversion/attention/result_vgg',conversion,
     #         'caffe/VGG_ILSVRC_19_layers'
     #     )
     src, trg = 'sub02', 'sub01'

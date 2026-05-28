@@ -30,9 +30,9 @@ device1 = 'cuda:0'
 images = None
 
 # Reconstruction data settings
-# all_subjects_list = ['FC','JK','KS','TH']
+# all_subjects_list = ['sub01', 'sub02','sub03', 'sub04']
 # conversion_list = [f'{src}_2_{trg}' for src, trg in itertools.permutations(all_subjects_list, 2)]
-conversion_list = ['JK_2_FC']
+conversion_list = ['sub02_2_sub01']
 
 recon_table = []
 
@@ -42,7 +42,7 @@ for sub_pair in conversion_list:
         'subjects': ['target'],
         'rois': ['VC'],
         'decoded_features_dir': os.path.join(
-            '../../neural_code_conversion/illusion/result_caffenet',
+            '../../neural_code_conversion/illusion/result_caffenet_single',
             sub_pair,
         )
     })
@@ -143,7 +143,7 @@ for recon in recon_table:
     feat_std0 = sio.loadmat(feature_std_file)
 
     # Setup results directory ------------------------------------------------
-    save_dir_root = os.path.join('./results/reconstruction/recon_images/GAN', recon['conversion'])
+    save_dir_root = os.path.join('./results/reconstruction/recon_images_single_trial/GAN', recon['conversion'])
 
     if not os.path.exists(save_dir_root):
         os.makedirs(save_dir_root)

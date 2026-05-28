@@ -275,13 +275,12 @@ def main():
 
     # Load brain data
     brain_dir = os.path.join(PROJECT_ROOT, 'data/fmri/illusion')
-    # brain_dir = '/home/nu/hbwang/data/fmri_shared/datasets/Deeprecon/fmriprep'
 
     subjects_list = {
-        'FC': 'S1_ImageNetTraining.h5',
-        'JK': 'S2_ImageNetTraining.h5',
-        # 'KS': 'S3_ImageNetTraining.h5',
-        # 'TH': 'S4_ImageNetTraining.h5',
+        'sub01': 'S1_ImageNetTraining.h5',
+        'sub02': 'S2_ImageNetTraining.h5',
+        # 'sub03': 'S3_ImageNetTraining.h5',
+        # 'sub04': 'S4_ImageNetTraining.h5',
     }
 
     data_brain = {subject: bdpy.BData(os.path.join(brain_dir, dat_file))
@@ -293,8 +292,7 @@ def main():
     pre_trained_decoder_dir = os.path.join(PROJECT_ROOT, 'data/pre-trained/decoders/illusion/VGG19/deeprecon_fmriprep_rep5_500voxel_allunits_fastl2lir_alpha100')
 
     # DNN feature directory
-    # vgg_dir = '../data/stimulus_feature/VGG_ILSVRC_19_layers'
-    vgg_dir = '/home/nu/hbwang/Deeprecon/derivatives/chunk_features'
+    vgg_dir = os.path.join(PROJECT_ROOT, 'data/stimulus_feature/VGG_ILSVRC_19_layers')
 
     network = 'caffe/VGG_ILSVRC_19_layers'
 
@@ -304,7 +302,8 @@ def main():
                      'conv4_1', 'conv4_2', 'conv4_3', 'conv4_4',
                      'conv5_1', 'conv5_2', 'conv5_3',
                      'conv5_4',
-                     'fc6', 'fc7','fc8'][::-1]
+                     'fc6', 'fc7',
+                     'fc8'][::-1]
 
     # Prepare indices for DNN features
     chunks_index_dict = prepare_indices(opt.n_iterations, features_list)

@@ -14,6 +14,7 @@ from utils import PathBuilder
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.abspath(os.path.join(SCRIPT_DIR, '..', '..'))
 
+
 def parse_arguments():
     """
     Parse command-line arguments and return an object containing them.
@@ -23,11 +24,13 @@ def parse_arguments():
     parser.add_argument('--gpu_id', type=str, default='0', help='GPU ID')
     return parser.parse_args()
 
+
 def load_data(brain_dir, subjects_list):
     """
     Load brain data from the specified directory.
     """
     return {subject: bdpy.BData(os.path.join(brain_dir, dat_file)) for subject, dat_file in subjects_list.items()}
+
 
 def setup_environment(opt):
     """
@@ -36,6 +39,7 @@ def setup_environment(opt):
     os.environ['CUDA_VISIBLE_DEVICES'] = opt.gpu_id
     if torch.cuda.is_available() and not opt.cuda:
         print("WARNING: You have a CUDA device, so you should probably run with --cuda")
+
 
 def convert_brain_activity(subject_src, subject_trg, roi, data_brain, rois_list, trg_decoder_dir, network, opt):
     """
@@ -61,7 +65,6 @@ def convert_brain_activity(subject_src, subject_trg, roi, data_brain, rois_list,
     x = data_brain[subject_src].select(rois_list[roi])
     x_labels = data_brain[subject_src].get_label('stimulus_name')
 
-
     # Build paths
     path_trg = PathBuilder(trg_decoder_dir, network, subject_trg, roi)
 
@@ -78,7 +81,7 @@ def convert_brain_activity(subject_src, subject_trg, roi, data_brain, rois_list,
         netG_A2B.cuda()
 
     # Load the pretrained model's weights
-    # If you use the model trained from scratch by yourself, the directory should be 
+    # If you use the model trained from scratch by yourself, the directory should be
     # converter_dir = os.path.join('output', conversion)
     converter_dir = os.path.join(PROJECT_ROOT, 'data/pre-trained/converters/illusion', conversion)
     device = torch.device('cuda:0')
@@ -104,14 +107,15 @@ def convert_brain_activity(subject_src, subject_trg, roi, data_brain, rois_list,
     features_list = ['relu6']
 
     # Decode features and save results
-    for vgg_feat in features_list:
+    for caffenet_feat in features_list:
         start_time = time()
-        pred_dnn = test_fastl2lir_revise(path_trg.build_model_path(vgg_feat), path_trg.build_model_path(vgg_feat), y_pred)
+        pred_dnn = test_fastl2lir_revise(path_trg.build_model_path(caffenet_feat),
+                                         path_trg.build_model_path(caffenet_feat), y_pred)
         print(f'Total elapsed time (prediction): {time() - start_time:.6f} seconds')
-        print(f'VGG feature: {vgg_feat}')
+        print(f'VGG feature: {caffenet_feat}')
 
         results_dir_root = './result_caffenet'
-        results_dir_prediction = os.path.join(results_dir_root, conversion, network, vgg_feat, "target", roi)
+        results_dir_prediction = os.path.join(results_dir_root, conversion, network, caffenet_feat, "target", roi)
         makedir_ifnot(results_dir_prediction)
 
         for i, label in enumerate(x_test_labels_unique):
@@ -120,6 +124,7 @@ def convert_brain_activity(subject_src, subject_trg, roi, data_brain, rois_list,
             save_array(save_file, feature, 'feat', dtype=np.float32, sparse=False)
 
         print(f'Saved: {results_dir_prediction}')
+
 
 def main():
     """
@@ -130,29 +135,29 @@ def main():
 
     # Set the brain data path and subjects list
     brain_dir = os.path.join(PROJECT_ROOT, 'data/fmri/illusion')
-    # brain_dir = '/home/kiss/data/fmri_shared/datasets/Attention/fmriprep'
 
     subjects_list = {
-        'FC': 'S1_Illusion.h5',
-        'JK': 'S2_Illusion.h5',
-        # 'KS': 'S3_Illusion.h5',
-        # 'TH': 'S4_Illusion.h5',
+        'sub01': 'S1_Illusion.h5',
+        'sub02': 'S2_Illusion.h5',
+        # 'sub03': 'S3_Illusion.h5',
+        # 'sub04': 'S4_Illusion.h5',
     }
-    
+
     data_brain = load_data(brain_dir, subjects_list)
 
     # Set VGG network and decoder paths
     network = 'caffe/bvlc_reference_caffenet'
     trg_decoder_dir = os.path.join(PROJECT_ROOT, 'data/pre-trained/decoders/illusion/CaffeNet')
-    
+
     # Define the list of regions of interest (ROI)
     rois_list = {'VC': 'ROI_VC =1'}
 
     # Convert brain activity data for each subject combination and ROI
     # for src, trg in itertools.permutations(subjects_list.keys(), 2):
-    src, trg = 'JK', 'FC'
+    src, trg = 'sub02', 'sub01'
     for roi in rois_list:
         convert_brain_activity(src, trg, roi, data_brain, rois_list, trg_decoder_dir, network, opt)
+
 
 if __name__ == "__main__":
     main()

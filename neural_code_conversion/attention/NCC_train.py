@@ -27,6 +27,9 @@ parser.add_argument('--cuda', action='store_true', help='enable CUDA')
 parser.add_argument('--n_cpu', type=int, default=16, help='number of cpu threads to use during batch generation')
 parser.add_argument('--gpu_id', type=str, default='0', help='gpu id')
 
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_ROOT = os.path.abspath(os.path.join(SCRIPT_DIR, '..', '..'))
+
 # Set the global Tensor type
 Tensor = torch.FloatTensor
 
@@ -271,15 +274,13 @@ def main():
         Tensor = torch.FloatTensor
 
     # Load brain data
-    # brain_dir = '../data/fmri/attention'
-    brain_dir = '/home/nu/hbwang/data/fmri_shared/datasets/Deeprecon/fmriprep'
+    brain_dir = os.path.join(PROJECT_ROOT, 'data/fmri/attention')
 
     subjects_list = {
         'sub01': 'sub-01_NaturalImageTraining.h5',
         'sub02': 'sub-02_NaturalImageTraining.h5',
         # 'sub03': 'sub-03_NaturalImageTraining.h5',
         # 'sub04': 'sub-04_NaturalImageTraining.h5',
-        # 'sub05': 'sub-05_NaturalImageTraining.h5'
     }
 
     data_brain = {subject: bdpy.BData(os.path.join(brain_dir, dat_file))
@@ -288,12 +289,10 @@ def main():
     rois_list = {'VC': 'ROI_VC =1'}
 
     # Define directories for decoders
-    # pre_trained_decoder_dir = '../data/pre-trained/decoders/ImageNetTraining/deeprecon_pyfastl2lir_alpha100_vgg19_allunits'
-    pre_trained_decoder_dir = '/home/nu/hbwang/projects/journal/original_icnn/data/feature_decoders/ImageNetTraining/deeprecon_pyfastl2lir_alpha100_vgg19_allunits'
+    pre_trained_decoder_dir = os.path.join(PROJECT_ROOT, 'data/pre-trained/decoders/attention_imagery/deeprecon_fmriprep_rep5_500voxel_allunits_fastl2lir_alpha100')
 
     # DNN feature directory
-    # vgg_dir = '../data/stimulus_feature/VGG_ILSVRC_19_layers'
-    vgg_dir = '/home/nu/hbwang/Deeprecon/derivatives/chunk_features'
+    vgg_dir = os.path.join(PROJECT_ROOT, 'data/stimulus_feature/VGG_ILSVRC_19_layers')
 
     network = 'caffe/VGG_ILSVRC_19_layers'
 
@@ -303,32 +302,33 @@ def main():
                      'conv4_1', 'conv4_2', 'conv4_3', 'conv4_4',
                      'conv5_1', 'conv5_2', 'conv5_3',
                      'conv5_4',
-                     'fc6', 'fc7','fc8'][::-1]
+                     'fc6', 'fc7', 'fc8'][::-1]
 
     # Prepare indices for DNN features
     chunks_index_dict = prepare_indices(opt.n_iterations, features_list)
 
     # Train the converter model for each subject pair and ROI
-    for src, trg in itertools.permutations(subjects_list.keys(), 2):
-        conversion = src + '_2_' + trg
-        print('Source: %s' % src)
-        print('Target: %s' % trg)
-        print('Conversion: %s' % conversion)
+    # for src, trg in itertools.permutations(subjects_list.keys(), 2):
+    src, trg = 'sub02','sub01'
+    conversion = src + '_2_' + trg
+    print('Source: %s' % src)
+    print('Target: %s' % trg)
+    print('Conversion: %s' % conversion)
 
-        for roi in rois_list:
-            print('ROI: %s' % roi)
-            folder_path = os.path.join('output', conversion, roi)
-            # Check if the converter has been trained before
-            if os.path.exists(folder_path) and os.path.isdir(folder_path):
-                files = os.listdir(folder_path)
-                if len(files) > 0:
-                    print("converter has been trained")
-                    continue
-            else:
-                print("converter is training")
+    for roi in rois_list:
+        print('ROI: %s' % roi)
+        folder_path = os.path.join('output', conversion, roi)
+        # Check if the converter has been trained before
+        if os.path.exists(folder_path) and os.path.isdir(folder_path):
+            files = os.listdir(folder_path)
+            if len(files) > 0:
+                print("converter has been trained")
+                continue
+        else:
+            print("converter is training")
 
-            # Train the converter model
-            converter_training(src, trg, data_brain, rois_list, roi, vgg_dir, features_list, network, pre_trained_decoder_dir, chunks_index_dict, opt)
+        # Train the converter model
+        converter_training(src, trg, data_brain, rois_list, roi, vgg_dir, features_list, network, pre_trained_decoder_dir, chunks_index_dict, opt)
 
 if __name__ == '__main__':
     main()

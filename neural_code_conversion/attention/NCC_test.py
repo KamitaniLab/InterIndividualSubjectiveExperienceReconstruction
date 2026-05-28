@@ -84,7 +84,7 @@ def convert_brain_activity(subject_src, subject_trg, roi, data_brain, rois_list,
         netG_A2B.cuda()
 
     # Load the pretrained model's weights
-    # If you use the model trained from scratch by yourself, the directory should be 
+    # If you use the model trained from scratch by yourself, the directory should be
     # converter_dir = os.path.join('output', conversion)
     converter_dir = os.path.join(PROJECT_ROOT, 'data/pre-trained/converters/attention_imagery', conversion)
     device = torch.device('cuda:0')
@@ -117,7 +117,8 @@ def convert_brain_activity(subject_src, subject_trg, roi, data_brain, rois_list,
     # Decode features and save results
     for vgg_feat in features_list:
         start_time = time()
-        pred_dnn = test_fastl2lir_revise(path_trg.build_model_path(vgg_feat), path_trg.build_model_path(vgg_feat), y_pred)
+        pred_dnn = test_fastl2lir_revise(path_trg.build_model_path(vgg_feat), path_trg.build_model_path(vgg_feat),
+                                         y_pred)
         print(f'Total elapsed time (prediction): {time() - start_time:.6f} seconds')
         print(f'VGG feature: {vgg_feat}')
 
@@ -141,20 +142,19 @@ def main():
 
     # Set the brain data path and subjects list
     brain_dir = os.path.join(PROJECT_ROOT, 'data/fmri/attention')
-    # brain_dir = '/home/kiss/data/fmri_shared/datasets/Attention/fmriprep'
-    subjects_list = {'sub01': 'sub-01_attention_vc_rois.h5',
-                     'sub02': 'sub-02_attention_vc_rois.h5',
-                     # 'sub03': 'sub-03_attention_vc_rois.h5',
-                     # 'sub04': 'sub-04_attention_vc_rois.h5',
-                     # 'sub05': 'sub-05_attention_vc_rois.h5'
+
+    subjects_list = {'sub01': 'sub-01_attention.h5',
+                     'sub02': 'sub-02_attention.h5',
+                     # 'sub03': 'sub-03_attention.h5',
+                     # 'sub04': 'sub-04_attention.h5',
                      }
-    
+
     data_brain = load_data(brain_dir, subjects_list)
 
     # Set VGG network and decoder paths
     vgg_network = 'caffe/VGG_ILSVRC_19_layers'
-    trg_decoder_dir = os.path.join(PROJECT_ROOT, 'data/pre-trained/decoders/attention_imagery/deeprecon_fmriprep_rep5_500voxel_allunits_fastl2lir_alpha100')
-    
+    trg_decoder_dir = os.path.join(PROJECT_ROOT,'data/pre-trained/decoders/attention_imagery/deeprecon_fmriprep_rep5_500voxel_allunits_fastl2lir_alpha100')
+
     # Define the list of regions of interest (ROI)
     rois_list = {'VC': 'ROI_VC =1'}
 

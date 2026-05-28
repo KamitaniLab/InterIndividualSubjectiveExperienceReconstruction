@@ -1,4 +1,3 @@
-
 <!-- Improved compatibility of back to top link: See: https://github.com/othneildrew/Best-README-Template/pull/73 -->
 <a name="readme-top"></a>
 
@@ -30,17 +29,16 @@ Haibao Wang, Fan L. Cheng, Shuntaro C. Aoki, Misato Tanaka, Yoshihiro Nagano, Hi
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/KamitaniLab/InterIndividualSubjectiveExperienceReconstruction.svg?style=for-the-badge
+[contributors-shield]: https://img.shields.io/github/contributors/KamitaniLab/InterIndividualSubjectiveExperienceReconstruction.svg?style=for-the-badge&color=blue
 [contributors-url]: https://github.com/KamitaniLab/InterIndividualSubjectiveExperienceReconstruction/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/KamitaniLab/InterIndividualSubjectiveExperienceReconstruction.svg?style=for-the-badge
+[forks-shield]: https://img.shields.io/github/forks/KamitaniLab/InterIndividualSubjectiveExperienceReconstruction.svg?style=for-the-badge&color=blue
 [forks-url]: https://github.com/KamitaniLab/InterIndividualSubjectiveExperienceReconstruction/forks
-[stars-shield]: https://img.shields.io/github/stars/KamitaniLab/InterIndividualSubjectiveExperienceReconstruction.svg?style=for-the-badge
+[stars-shield]: https://img.shields.io/github/stars/KamitaniLab/InterIndividualSubjectiveExperienceReconstruction.svg?style=for-the-badge&color=blue
 [stars-url]: https://github.com/KamitaniLab/InterIndividualSubjectiveExperienceReconstruction/stargazers
-[issues-shield]: https://img.shields.io/github/issues/KamitaniLab/InterIndividualSubjectiveExperienceReconstruction.svg?style=for-the-badge
+[issues-shield]: https://img.shields.io/github/issues/KamitaniLab/InterIndividualSubjectiveExperienceReconstruction.svg?style=for-the-badge&color=blue
 [issues-url]: https://github.com/KamitaniLab/InterIndividualSubjectiveExperienceReconstruction/issues
-[license-shield]: https://img.shields.io/github/license/KamitaniLab/InterIndividualSubjectiveExperienceReconstruction.svg?style=for-the-badge
+[license-shield]: https://img.shields.io/github/license/KamitaniLab/InterIndividualSubjectiveExperienceReconstruction.svg?style=for-the-badge&color=blue
 [license-url]: https://github.com/KamitaniLab/InterIndividualSubjectiveExperienceReconstruction/blob/main/LICENSE.txt
-
 
 
 ## Getting Started
@@ -96,7 +94,9 @@ If you prefer to train the decoders yourself (approximately 2 days per subject),
 
 ### Train Neural Code Converters
 
-To train the neural code converters using content loss for subject pairs, navigate to the `NCC_content_loss` directory and run:
+To train the neural code converters using content loss for subject pairs, navigate to the corresponding subdirectory under `neural_code_conversion`.
+
+For example, to train the converter for visual illusion, navigate to `neural_code_conversion/illusion` and run:
 
 ```sh
 python NCC_train.py --cuda
@@ -114,13 +114,13 @@ python download.py pre-trained-converters
 
 #### DNN Feature Decoding
 
-To decode DNN features from converted brain activities (approximately 80 mins per subject pair), use the following commands in the corresponding directory:
+To decode DNN features from converted brain activities, navigate to the corresponding subdirectory under `neural_code_conversion`.
 
+For example, for visual illusion, navigate to `neural_code_conversion/illusion` and run:
 
-  
-  ```sh
-  python NCC_test.py --cuda
-  ```
+```sh
+python NCC_test.py
+```
 
 #### Image Reconstruction
 
@@ -131,10 +131,10 @@ To reconstruct images from the decoded features:
 3. Modify the directory of the decoded features in the script as needed to reconstruct images.
 
 ### Quantitative Evaluation
-The quantitative evaluations are presented in terms of conversion accuracy, decoding accuracy, and identification accuracy.
+The quantitative evaluations are presented in terms of conversion accuracy, and reconstruction quality.
 
 #### Conversion Accuracy
-To calculate raw correlations for conversion accuracy, navigate to the `conversion_accuracy` directory and run:
+To calculate raw correlations for conversion accuracy, navigate to the `evaluation/conversion_accuracy` directory and run:
 
   ```sh
   # pattern correlation
@@ -145,12 +145,25 @@ To calculate raw correlations for conversion accuracy, navigate to the `conversi
   ```
 
 #### Evaluation of reconstruction
-To quantitatively evaluate the reconstructed images, please request and download the ground truth stimulus images using this [link](https://forms.gle/ujvA34948Xg49jdn9) due to licensing restrictions. Organize the downloaded images in the following directory structure: `data/test_image/source`.
+To quantitatively evaluate the reconstructed images, navigate to the `evaluation/reconstruction_evaluation` directory.
 
-Then, navigate to the `identification_accuracy` directory and run:
+For example, to evaluate illusion reconstruction, navigate to the `illusion` directory and run:
+
+```sh
+python Eval_color_illusion_vs_control.py
+python Eval_line_global.py
+python Eval_line_local.py
+```
+
+To evaluate attention reconstruction, navigate to the `attention` directory and run:
+
 ```sh
 python recon_image_eval.py
 python recon_image_eval_dnn.py
 ```
+
+Imagery reconstruction can be evaluated in the same way by navigating to the corresponding `imagery` subdirectory.
+
+Due to licensing restrictions, the ground truth/test images for attention and imagery reconstruction evaluation are not included in this repository. Please request and download them using this [link](https://forms.gle/ujvA34948Xg49jdn9), then organize the downloaded images under `data/test_image/attention` and `data/test_image/imagery`.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>

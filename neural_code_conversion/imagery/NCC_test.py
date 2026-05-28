@@ -14,6 +14,7 @@ from utils import PathBuilder
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.abspath(os.path.join(SCRIPT_DIR, '..', '..'))
 
+
 def parse_arguments():
     """
     Parse command-line arguments and return an object containing them.
@@ -23,11 +24,13 @@ def parse_arguments():
     parser.add_argument('--gpu_id', type=str, default='0', help='GPU ID')
     return parser.parse_args()
 
+
 def load_data(brain_dir, subjects_list):
     """
     Load brain data from the specified directory.
     """
     return {subject: bdpy.BData(os.path.join(brain_dir, dat_file)) for subject, dat_file in subjects_list.items()}
+
 
 def setup_environment(opt):
     """
@@ -36,6 +39,7 @@ def setup_environment(opt):
     os.environ['CUDA_VISIBLE_DEVICES'] = opt.gpu_id
     if torch.cuda.is_available() and not opt.cuda:
         print("WARNING: You have a CUDA device, so you should probably run with --cuda")
+
 
 def convert_brain_activity(subject_src, subject_trg, roi, data_brain, rois_list, trg_decoder_dir, vgg_network, opt):
     """
@@ -59,7 +63,7 @@ def convert_brain_activity(subject_src, subject_trg, roi, data_brain, rois_list,
 
     # Select ROI data and labels from the source subject
     x = data_brain[subject_src].select(rois_list[roi])
-    x_labels =  data_brain[subject_src].select('imagery_image_index')
+    x_labels = data_brain[subject_src].select('imagery_image_index')
 
     # Build paths
     path_trg = PathBuilder(trg_decoder_dir, vgg_network, subject_trg, roi)
@@ -77,7 +81,7 @@ def convert_brain_activity(subject_src, subject_trg, roi, data_brain, rois_list,
         netG_A2B.cuda()
 
     # Load the pretrained model's weights
-    # If you use the model trained from scratch by yourself, the directory should be 
+    # If you use the model trained from scratch by yourself, the directory should be
     # converter_dir = os.path.join('output', conversion)
     converter_dir = os.path.join(PROJECT_ROOT, 'data/pre-trained/converters/attention_imagery', conversion)
     device = torch.device('cuda:0')
@@ -109,7 +113,8 @@ def convert_brain_activity(subject_src, subject_trg, roi, data_brain, rois_list,
     # Decode features and save results
     for vgg_feat in features_list:
         start_time = time()
-        pred_dnn = test_fastl2lir_revise(path_trg.build_model_path(vgg_feat), path_trg.build_model_path(vgg_feat), y_pred)
+        pred_dnn = test_fastl2lir_revise(path_trg.build_model_path(vgg_feat), path_trg.build_model_path(vgg_feat),
+                                         y_pred)
         print(f'Total elapsed time (prediction): {time() - start_time:.6f} seconds')
         print(f'VGG feature: {vgg_feat}')
 
@@ -124,6 +129,7 @@ def convert_brain_activity(subject_src, subject_trg, roi, data_brain, rois_list,
 
         print(f'Saved: {results_dir_prediction}')
 
+
 def main():
     """
     Main function to execute the program logic by calling other functions.
@@ -133,19 +139,20 @@ def main():
 
     # Set the brain data path and subjects list
     brain_dir = os.path.join(PROJECT_ROOT, 'data/fmri/imagery')
-    # brain_dir = '/home/kiss/data/fmri_shared/datasets/Attention/fmriprep'
-    subjects_list = {'sub01': 'TH_Imagery_volume_native.h5',
-                     'sub02': 'AM_Imagery_volume_native.h5',
-                     # 'sub03': 'ES_Imagery_volume_native.h5',
-                     # 'sub04': 'KS_Imagery_volume_native.h5',
+
+    subjects_list = {'sub01': 'sub-01_imagery.h5',
+                     'sub02': 'sub-02_imagery.h5',
+                     # 'sub03': 'sub-03_imagery.h5',
+                     # 'sub04': 'sub-04_imagery.h5',
                      }
-    
+
     data_brain = load_data(brain_dir, subjects_list)
 
     # Set VGG network and decoder paths
     vgg_network = 'caffe/VGG_ILSVRC_19_layers'
-    trg_decoder_dir = os.path.join(PROJECT_ROOT,'data/pre-trained/decoders/attention_imagery/deeprecon_fmriprep_rep5_500voxel_allunits_fastl2lir_alpha100')
-    
+    trg_decoder_dir = os.path.join(PROJECT_ROOT,
+                                   'data/pre-trained/decoders/attention_imagery/deeprecon_fmriprep_rep5_500voxel_allunits_fastl2lir_alpha100')
+
     # Define the list of regions of interest (ROI)
     rois_list = {'VC': 'ROI_VC =1'}
 
@@ -154,6 +161,7 @@ def main():
     src, trg = 'sub02', 'sub01'
     for roi in rois_list:
         convert_brain_activity(src, trg, roi, data_brain, rois_list, trg_decoder_dir, vgg_network, opt)
+
 
 if __name__ == "__main__":
     main()
