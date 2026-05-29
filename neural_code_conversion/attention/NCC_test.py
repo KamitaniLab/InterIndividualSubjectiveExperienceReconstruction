@@ -14,6 +14,7 @@ from utils import PathBuilder
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.abspath(os.path.join(SCRIPT_DIR, '..', '..'))
 
+
 def parse_arguments():
     """
     Parse command-line arguments and return an object containing them.
@@ -23,11 +24,13 @@ def parse_arguments():
     parser.add_argument('--gpu_id', type=str, default='0', help='GPU ID')
     return parser.parse_args()
 
+
 def load_data(brain_dir, subjects_list):
     """
     Load brain data from the specified directory.
     """
     return {subject: bdpy.BData(os.path.join(brain_dir, dat_file)) for subject, dat_file in subjects_list.items()}
+
 
 def setup_environment(opt):
     """
@@ -36,6 +39,7 @@ def setup_environment(opt):
     os.environ['CUDA_VISIBLE_DEVICES'] = opt.gpu_id
     if torch.cuda.is_available() and not opt.cuda:
         print("WARNING: You have a CUDA device, so you should probably run with --cuda")
+
 
 def convert_brain_activity(subject_src, subject_trg, roi, data_brain, rois_list, trg_decoder_dir, vgg_network, opt):
     """
@@ -133,6 +137,17 @@ def convert_brain_activity(subject_src, subject_trg, roi, data_brain, rois_list,
 
         print(f'Saved: {results_dir_prediction}')
 
+
+def get_subject_pairs(subjects_list, example_pair=None):
+    """
+    Return the default example pair or all source-target subject pairs.
+    """
+    if example_pair is not None:
+        return [example_pair]
+
+    return itertools.permutations(subjects_list.keys(), 2)
+
+
 def main():
     """
     Main function to execute the program logic by calling other functions.
@@ -153,16 +168,17 @@ def main():
 
     # Set VGG network and decoder paths
     vgg_network = 'caffe/VGG_ILSVRC_19_layers'
-    trg_decoder_dir = os.path.join(PROJECT_ROOT,'data/pre-trained/decoders/attention_imagery/deeprecon_fmriprep_rep5_500voxel_allunits_fastl2lir_alpha100')
+    trg_decoder_dir = os.path.join(PROJECT_ROOT,                                   'data/pre-trained/decoders/attention_imagery/deeprecon_fmriprep_rep5_500voxel_allunits_fastl2lir_alpha100')
 
     # Define the list of regions of interest (ROI)
     rois_list = {'VC': 'ROI_VC =1'}
+    example_pair = ('sub02', 'sub01')  # Set to None to convert all subject pairs.
 
-    # Convert brain activity data for each subject combination and ROI
-    # for src, trg in itertools.permutations(subjects_list.keys(), 2):
-    src, trg = 'sub02', 'sub01'
-    for roi in rois_list:
-        convert_brain_activity(src, trg, roi, data_brain, rois_list, trg_decoder_dir, vgg_network, opt)
+    # Convert brain activity data for the example pair or all subject pairs.
+    for src, trg in get_subject_pairs(subjects_list, example_pair):
+        for roi in rois_list:
+            convert_brain_activity(src, trg, roi, data_brain, rois_list, trg_decoder_dir, vgg_network, opt)
+
 
 if __name__ == "__main__":
     main()

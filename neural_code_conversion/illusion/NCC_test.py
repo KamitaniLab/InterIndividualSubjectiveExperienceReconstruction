@@ -8,20 +8,26 @@ import numpy as np
 from bdpy.dataform import save_array
 from bdpy.util import makedir_ifnot
 from utils import fastl2lir_parameter, test_fastl2lir_revise, load_mean_std
-import itertools, bdpy
+import bdpy
 from utils import PathBuilder
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.abspath(os.path.join(SCRIPT_DIR, '..', '..'))
 
 
-def parse_arguments():
+def parse_arguments(default_trial_mode='averaged'):
     """
     Parse command-line arguments and return an object containing them.
     """
     parser = argparse.ArgumentParser()
     parser.add_argument('--cuda', action='store_true', help='use GPU computation')
     parser.add_argument('--gpu_id', type=str, default='0', help='GPU ID')
+    parser.add_argument(
+        '--trial_mode',
+        choices=['averaged', 'single'],
+        default=default_trial_mode,
+        help='Use averaged responses per stimulus or single-trial responses'
+    )
     return parser.parse_args()
 
 
@@ -39,6 +45,36 @@ def setup_environment(opt):
     os.environ['CUDA_VISIBLE_DEVICES'] = opt.gpu_id
     if torch.cuda.is_available() and not opt.cuda:
         print("WARNING: You have a CUDA device, so you should probably run with --cuda")
+
+
+def prepare_test_data(x, x_labels, x_mean_src, x_norm_src, trial_mode):
+    """
+    Prepare source brain activity and output labels for averaged or single-trial testing.
+    """
+    if trial_mode == 'averaged':
+        x_test_labels = np.unique(x_labels)
+        x_item_raw = np.vstack([
+            np.mean(x[(np.array(x_labels) == lb).flatten(), :], axis=0)
+            for lb in x_test_labels
+        ])
+        results_dir_root = './result_caffenet'
+    elif trial_mode == 'single':
+        x_test_labels_unique, counts = np.unique(x_labels, return_counts=True)
+        x_label_dict = dict(zip(x_test_labels_unique, counts))
+        x_test_labels = []
+
+        for label in x_labels:
+            trial_num = x_label_dict[label]
+            x_test_labels.append(label + '_trial' + str(trial_num).zfill(2))
+            x_label_dict[label] -= 1
+
+        x_item_raw = x
+        results_dir_root = './result_caffenet_single'
+    else:
+        raise ValueError(f"Unsupported trial_mode: {trial_mode}")
+
+    x_item = (x_item_raw - x_mean_src) / x_norm_src
+    return x_item, x_test_labels, results_dir_root
 
 
 def convert_brain_activity(subject_src, subject_trg, roi, data_brain, rois_list, trg_decoder_dir, network, opt):
@@ -92,10 +128,13 @@ def convert_brain_activity(subject_src, subject_trg, roi, data_brain, rois_list,
     # Define Tensor type
     Tensor = torch.cuda.FloatTensor if opt.cuda else torch.Tensor
 
-    # Get unique labels and compute their averages
-    x_test_labels_unique = np.unique(x_labels)
-    x_averaged = np.vstack([np.mean(x[(np.array(x_labels) == lb).flatten(), :], axis=0) for lb in x_test_labels_unique])
-    x_item = (x_averaged - x_mean_src) / x_norm_src
+    x_item, x_test_labels, results_dir_root = prepare_test_data(
+        x,
+        x_labels,
+        x_mean_src,
+        x_norm_src,
+        opt.trial_mode
+    )
     real_A = Variable(Tensor(x_item), requires_grad=False)
 
     # Convert brain activity data
@@ -114,11 +153,10 @@ def convert_brain_activity(subject_src, subject_trg, roi, data_brain, rois_list,
         print(f'Total elapsed time (prediction): {time() - start_time:.6f} seconds')
         print(f'VGG feature: {caffenet_feat}')
 
-        results_dir_root = './result_caffenet'
         results_dir_prediction = os.path.join(results_dir_root, conversion, network, caffenet_feat, "target", roi)
         makedir_ifnot(results_dir_prediction)
 
-        for i, label in enumerate(x_test_labels_unique):
+        for i, label in enumerate(x_test_labels):
             feature = np.array([pred_dnn[i,]])
             save_file = os.path.join(results_dir_prediction, f'{label}.mat')
             save_array(save_file, feature, 'feat', dtype=np.float32, sparse=False)
@@ -126,11 +164,21 @@ def convert_brain_activity(subject_src, subject_trg, roi, data_brain, rois_list,
         print(f'Saved: {results_dir_prediction}')
 
 
-def main():
+def get_subject_pairs(subjects_list, example_pair=None):
+    """
+    Return the default example pair or all source-target subject pairs.
+    """
+    if example_pair is not None:
+        return [example_pair]
+
+    return itertools.permutations(subjects_list.keys(), 2)
+
+
+def main(default_trial_mode='averaged'):
     """
     Main function to execute the program logic by calling other functions.
     """
-    opt = parse_arguments()
+    opt = parse_arguments(default_trial_mode=default_trial_mode)
     setup_environment(opt)
 
     # Set the brain data path and subjects list
@@ -151,12 +199,12 @@ def main():
 
     # Define the list of regions of interest (ROI)
     rois_list = {'VC': 'ROI_VC =1'}
+    example_pair = ('sub02', 'sub01')  # Set to None to convert all subject pairs.
 
-    # Convert brain activity data for each subject combination and ROI
-    # for src, trg in itertools.permutations(subjects_list.keys(), 2):
-    src, trg = 'sub02', 'sub01'
-    for roi in rois_list:
-        convert_brain_activity(src, trg, roi, data_brain, rois_list, trg_decoder_dir, network, opt)
+    # Convert brain activity data for the example pair or all subject pairs.
+    for src, trg in get_subject_pairs(subjects_list, example_pair):
+        for roi in rois_list:
+            convert_brain_activity(src, trg, roi, data_brain, rois_list, trg_decoder_dir, network, opt)
 
 
 if __name__ == "__main__":

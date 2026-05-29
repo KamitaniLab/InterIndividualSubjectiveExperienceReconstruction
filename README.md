@@ -131,7 +131,7 @@ To reconstruct images from the decoded features:
 3. Modify the directory of the decoded features in the script as needed to reconstruct images.
 
 ### Quantitative Evaluation
-The quantitative evaluations are presented in terms of conversion accuracy, and reconstruction quality.
+The quantitative evaluations are presented in terms of conversion accuracy and reconstruction quality.
 
 #### Conversion Accuracy
 To calculate raw correlations for conversion accuracy, navigate to the `evaluation/conversion_accuracy` directory and run:
