@@ -1,60 +1,35 @@
 {
-    "fmri_training": {
-        "zip": false,
+    "fmri-attention": {
         "save_in": "./fmri",
         "files": [
-            {"md5sum": "591734b434040da2a8b6f7e9239e7c08",
-             "name": "sub-01_NaturalImageTraining.h5",
-             "url": "https://figshare.com/ndownloader/files/32712197"},
-
-            {"md5sum": "58a56e9d67d485f3b92ee55d5600cf10",
-             "name": "sub-02_NaturalImageTraining.h5",
-             "url": "https://figshare.com/ndownloader/files/32712488"},
-
-            {"md5sum": "e56d4e0185d4e42246cbfa5e314e1545",
-             "name": "sub-03_NaturalImageTraining.h5",
-             "url": "https://figshare.com/ndownloader/files/32718017"},
-
-            {"md5sum": "0b29c97b630c98ea937042241103554f",
-             "name": "sub-04_NaturalImageTraining.h5",
-             "url": "https://figshare.com/ndownloader/files/32718266"}
+            {
+                "name":   "fmri-attention.zip",
+                "url":    "https://ndownloader.figshare.com/files/65306352",
+                "md5sum": "3526a7a9ea4477ae55c66ce5b02fb3ab",
+                "postproc": [{"name": "unzip", "destination": "./fmri"}]
+            }
         ]
     },
-    "fmri_test": {
-        "zip": false,
+    "fmri-illusion": {
         "save_in": "./fmri",
         "files": [
-            {"md5sum": "73f3880f263c610e5b4bf1d912bad498",
-             "name": "sub-01_NaturalImageTest.h5",
-             "url": "https://figshare.com/ndownloader/files/32712131"},
-
-            {"md5sum": "b16c69be57d4e2543696aec58241f9e1",
-             "name": "sub-01_ArtificialImageTest.h5",
-             "url": "https://figshare.com/ndownloader/files/32709608"},
-
-            {"md5sum": "885ad6c29fd36cb164426e150c9cd9d5",
-             "name": "sub-02_NaturalImageTest.h5",
-             "url": "https://figshare.com/ndownloader/files/32712407"},
-
-            {"md5sum": "3c4e8341f650dc65f6a6c06f7dd0f7cc",
-             "name": "sub-02_ArtificialImageTest.h5",
-             "url": "https://figshare.com/ndownloader/files/32712506"},
-
-            {"md5sum": "791b4f627cc72f80698b297f59e72d8d",
-             "name": "sub-03_NaturalImageTest.h5",
-             "url": "https://figshare.com/ndownloader/files/32717852"},
-
-            {"md5sum": "7373bb3709dcfbc0a3dc7c8dc6574d55",
-             "name": "sub-03_ArtificialImageTest.h5",
-             "url": "https://figshare.com/ndownloader/files/32718050"},
-
-            {"md5sum": "aaa37f18f64a415718d882ef52ea259e",
-             "name": "sub-04_NaturalImageTest.h5",
-             "url": "https://figshare.com/ndownloader/files/32718092"},
-
-            {"md5sum": "df01462b778b83e6fd669779b9ae5e92",
-             "name": "sub-04_ArtificialImageTest.h5",
-             "url": "https://figshare.com/ndownloader/files/32718284"}
+            {
+                "name":   "fmri-illusion.zip",
+                "url":    "https://ndownloader.figshare.com/files/65306583",
+                "md5sum": "1634a0c6c0aa2a8c1cec02741a6e67da",
+                "postproc": [{"name": "unzip", "destination": "./fmri"}]
+            }
+        ]
+    },
+    "fmri-imagery": {
+        "save_in": "./fmri",
+        "files": [
+            {
+                "name":   "fmri-imagery.zip",
+                "url":    "https://ndownloader.figshare.com/files/65306691",
+                "md5sum": "9cf22378f0dc79970485200c32447a58",
+                "postproc": [{"name": "unzip", "destination": "./fmri"}]
+            }
         ]
     },
     "stimulus_feature": {
@@ -176,144 +151,51 @@
             }
         ]
     },
-    "pre-trained-converters": {
-        "save_in": "./",
+
+    "pre-trained-converters-attention_imagery": {
+        "save_in": "./pre-trained/converters",
         "files": [
             {
-                "name":   "pre-trained-converters.zip",
-                "url":    "https://ndownloader.figshare.com/files/48969991",
-                "md5sum": "3a32821ffd3d083062728352188b3f6d",
-                "postproc": [{"name": "unzip", "destination": "./"}]
+                "name":   "pre-trained-converters-attention_imagery.zip",
+                "url":    "https://ndownloader.figshare.com/files/65306823",
+                "md5sum": "154f37c6e37350d238a4a9bea82137f4",
+                "postproc": [{"name": "unzip", "destination": "./pre-trained/converters"}]
             }
         ]
     },
-    "pre-trained-decoders": {
-        "save_in": "./",
+
+    "pre-trained-converters-illusion": {
+        "save_in": "./pre-trained/converters",
         "files": [
             {
-                "name":   "pre-trained-decoders-ImageNetTraining-deeprecon_pyfastl2lir_alpha100_vgg19_allunits-caffe-VGG_ILSVRC_19_layers-conv1_1.zip",
-                "url":    ["https://ndownloader.figshare.com/files/48992341", "https://ndownloader.figshare.com/files/48992479"],
-                "md5sum": ["fda480919800b1e60c9dca6213327b1f", "88d7862608ba327a91dde8c4e5d50e14"],
-                "postproc": [{"name": "merge"}, {"name": "unzip", "destination": "./"}]
-            },
-            {
-                "name":   "pre-trained-decoders-ImageNetTraining-deeprecon_pyfastl2lir_alpha100_vgg19_allunits-caffe-VGG_ILSVRC_19_layers-conv1_2.zip",
-                "url":    ["https://ndownloader.figshare.com/files/48985585", "https://ndownloader.figshare.com/files/48985993"],
-                "md5sum": ["041454ca452bebbe31dd83bd3bff5e7a", "c35449cbd14c84b1cadf0a788dc0c411"],
-                "postproc": [{"name": "merge"}, {"name": "unzip", "destination": "./"}]
-            },
-            {
-                "name":   "pre-trained-decoders-ImageNetTraining-deeprecon_pyfastl2lir_alpha100_vgg19_allunits-caffe-VGG_ILSVRC_19_layers-conv2_1.zip",
-                "url":    "https://ndownloader.figshare.com/files/48961249",
-                "md5sum": "100095b5993199e44537299c31cf7c7d",
-                "postproc": [{"name": "unzip", "destination": "./"}]
-            },
-            {
-                "name":   "pre-trained-decoders-ImageNetTraining-deeprecon_pyfastl2lir_alpha100_vgg19_allunits-caffe-VGG_ILSVRC_19_layers-conv2_2.zip",
-                "url":    "https://ndownloader.figshare.com/files/48963853",
-                "md5sum": "63d82fcc6d6a7c0c33cdfcd91266360b",
-                "postproc": [{"name": "unzip", "destination": "./"}]
-            },
-            {
-                "name":   "pre-trained-decoders-ImageNetTraining-deeprecon_pyfastl2lir_alpha100_vgg19_allunits-caffe-VGG_ILSVRC_19_layers-conv3_1.zip",
-                "url":    "https://ndownloader.figshare.com/files/48957658",
-                "md5sum": "a542eb17bb31a1efb4a0939a557cbf74",
-                "postproc": [{"name": "unzip", "destination": "./"}]
-            },
-            {
-                "name":   "pre-trained-decoders-ImageNetTraining-deeprecon_pyfastl2lir_alpha100_vgg19_allunits-caffe-VGG_ILSVRC_19_layers-conv3_2.zip",
-                "url":    "https://ndownloader.figshare.com/files/48958615",
-                "md5sum": "5f07acad53adf1498a92c4a72c88d0b5",
-                "postproc": [{"name": "unzip", "destination": "./"}]
-            },
-            {
-                "name":   "pre-trained-decoders-ImageNetTraining-deeprecon_pyfastl2lir_alpha100_vgg19_allunits-caffe-VGG_ILSVRC_19_layers-conv3_3.zip",
-                "url":    "https://ndownloader.figshare.com/files/48959299",
-                "md5sum": "a1b9ae34bc7aca81908d2751866afdbb",
-                "postproc": [{"name": "unzip", "destination": "./"}]
-            },
-            {
-                "name":   "pre-trained-decoders-ImageNetTraining-deeprecon_pyfastl2lir_alpha100_vgg19_allunits-caffe-VGG_ILSVRC_19_layers-conv3_4.zip",
-                "url":    "https://ndownloader.figshare.com/files/48960073",
-                "md5sum": "bc0614f0c57700ececfbd16a381d25a1",
-                "postproc": [{"name": "unzip", "destination": "./"}]
-            },
-            {
-                "name":   "pre-trained-decoders-ImageNetTraining-deeprecon_pyfastl2lir_alpha100_vgg19_allunits-caffe-VGG_ILSVRC_19_layers-conv4_1.zip",
-                "url":    "https://ndownloader.figshare.com/files/48935218",
-                "md5sum": "afbc0ddda4fb85977e253a77cc466e86",
-                "postproc": [{"name": "unzip", "destination": "./"}]
-            },
-            {
-                "name":   "pre-trained-decoders-ImageNetTraining-deeprecon_pyfastl2lir_alpha100_vgg19_allunits-caffe-VGG_ILSVRC_19_layers-conv4_2.zip",
-                "url":    "https://ndownloader.figshare.com/files/48935257",
-                "md5sum": "f1d0a4a7fd1d323314b4de7560d0a674",
-                "postproc": [{"name": "unzip", "destination": "./"}]
-            },
-            {
-                "name":   "pre-trained-decoders-ImageNetTraining-deeprecon_pyfastl2lir_alpha100_vgg19_allunits-caffe-VGG_ILSVRC_19_layers-conv4_3.zip",
-                "url":    "https://ndownloader.figshare.com/files/48935317",
-                "md5sum": "8b922cd6b35b8f2568c96f918301f29f",
-                "postproc": [{"name": "unzip", "destination": "./"}]
-            },
-            {
-                "name":   "pre-trained-decoders-ImageNetTraining-deeprecon_pyfastl2lir_alpha100_vgg19_allunits-caffe-VGG_ILSVRC_19_layers-conv4_4.zip",
-                "url":    "https://ndownloader.figshare.com/files/48935659",
-                "md5sum": "36978879ba0238202d0a3058744877fa",
-                "postproc": [{"name": "unzip", "destination": "./"}]
-            },
-            {
-                "name":   "pre-trained-decoders-ImageNetTraining-deeprecon_pyfastl2lir_alpha100_vgg19_allunits-caffe-VGG_ILSVRC_19_layers-conv5_1.zip",
-                "url":    "https://ndownloader.figshare.com/files/48936121",
-                "md5sum": "3b8d6c6bd305df34722d7b3590e62b9d",
-                "postproc": [{"name": "unzip", "destination": "./"}]
-            },
-            {
-                "name":   "pre-trained-decoders-ImageNetTraining-deeprecon_pyfastl2lir_alpha100_vgg19_allunits-caffe-VGG_ILSVRC_19_layers-conv5_2.zip",
-                "url":    "https://ndownloader.figshare.com/files/48936253",
-                "md5sum": "00331347cb1d17b96333b10bdad952f7",
-                "postproc": [{"name": "unzip", "destination": "./"}]
-            },
-            {
-                "name":   "pre-trained-decoders-ImageNetTraining-deeprecon_pyfastl2lir_alpha100_vgg19_allunits-caffe-VGG_ILSVRC_19_layers-conv5_3.zip",
-                "url":    "https://ndownloader.figshare.com/files/48936373",
-                "md5sum": "85f1037968a81cc9a48b69af5090894a",
-                "postproc": [{"name": "unzip", "destination": "./"}]
-            },
-            {
-                "name":   "pre-trained-decoders-ImageNetTraining-deeprecon_pyfastl2lir_alpha100_vgg19_allunits-caffe-VGG_ILSVRC_19_layers-conv5_4.zip",
-                "url":    "https://ndownloader.figshare.com/files/48936496",
-                "md5sum": "1e2c50eb4ce67797dd1a45d281a34347",
-                "postproc": [{"name": "unzip", "destination": "./"}]
-            },
-            {
-                "name":   "pre-trained-decoders-ImageNetTraining-deeprecon_pyfastl2lir_alpha100_vgg19_allunits-caffe-VGG_ILSVRC_19_layers-fc6.zip",
-                "url":    "https://ndownloader.figshare.com/files/48935107",
-                "md5sum": "d18b7c1b56cd5840c13a4ebf8b3bb11e",
-                "postproc": [{"name": "unzip", "destination": "./"}]
-            },
-            {
-                "name":   "pre-trained-decoders-ImageNetTraining-deeprecon_pyfastl2lir_alpha100_vgg19_allunits-caffe-VGG_ILSVRC_19_layers-fc7.zip",
-                "url":    "https://ndownloader.figshare.com/files/48935194",
-                "md5sum": "a98fb7db31f9cdb109c9277123ffc570",
-                "postproc": [{"name": "unzip", "destination": "./"}]
-            },
-            {
-                "name":   "pre-trained-decoders-ImageNetTraining-deeprecon_pyfastl2lir_alpha100_vgg19_allunits-caffe-VGG_ILSVRC_19_layers-fc8.zip",
-                "url":    "https://ndownloader.figshare.com/files/48935200",
-                "md5sum": "e023dc1b61c5da2e6dd03323fa4647cf",
-                "postproc": [{"name": "unzip", "destination": "./"}]
+                "name":   "pre-trained-converters-illusion.zip",
+                "url":    "https://ndownloader.figshare.com/files/65307312",
+                "md5sum": "cf0486338d2922c7c2787ea56afaceb7",
+                "postproc": [{"name": "unzip", "destination": "./pre-trained/converters"}]
             }
         ]
     },
-    "test_image-true_features": {
-        "save_in": "./",
+
+    "pre-trained-decoders-attention_imagery": {
+        "save_in": "./pre-trained/decoders",
         "files": [
             {
-                "name":   "test_image-true_features-VGG_ILSVRC_19_layers.zip",
-                "url":    "https://ndownloader.figshare.com/files/48972361",
-                "md5sum": "b8de5cac4a6409269424c898613c24a4",
-                "postproc": [{"name": "unzip", "destination": "./"}]
+                "name":   "pre-trained-decoders-attention_imagery.zip",
+                "url":    ["https://ndownloader.figshare.com/files/65823429", "https://ndownloader.figshare.com/files/65826825"],
+                "md5sum": ["78a7ce01e2a0cdc3ee5ca5c0d6b11e04", "9f7dd9c158e14fc77266cc3ca355bf50"],
+                "postproc": [{"name": "merge"}, {"name": "unzip", "destination": "./pre-trained/decoders"}]
+            }
+        ]
+    },
+
+    "pre-trained-decoders-illusion": {
+        "save_in": "./pre-trained/decoders",
+        "files": [
+            {
+                "name":   "pre-trained-decoders-illusion.zip",
+                "url":    ["https://ndownloader.figshare.com/files/65466819", "https://ndownloader.figshare.com/files/65467872"],
+                "md5sum": ["f3510d809a626a95682e51387313840b", "68fbe40a2e6de48afee4b161919721e7"],
+                "postproc": [{"name": "merge"}, {"name": "unzip", "destination": "./pre-trained/decoders"}]
             }
         ]
     }
