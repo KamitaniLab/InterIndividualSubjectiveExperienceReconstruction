@@ -205,13 +205,13 @@ To use this project, you'll need to download and organize the required data:
 Alternatively, you can use the following commands to download specific data (The data will be automatically extracted and organized into the designated directory):
  ```sh
 # In "data" directory:
-# To download the test fMRI data for visual illusion:
+# To download the fMRI data for visual illusion:
 python download.py fmri-illusion
 
-# To download the test fMRI data for visual attention:
+# To download the fMRI data for visual attention:
 python download.py fmri-attention
 
-# To download the test fMRI data for visual imagery:
+# To download the fMRI data for visual imagery:
 python download.py fmri-imagery
 
 # download the DNN features of training images:
