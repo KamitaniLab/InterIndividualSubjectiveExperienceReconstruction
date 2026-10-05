@@ -160,7 +160,7 @@ def main():
 
     # Set VGG network and decoder paths
     vgg_network = 'caffe/VGG_ILSVRC_19_layers'
-    trg_decoder_dir = os.path.join(PROJECT_ROOT,                                  'data/pre-trained/decoders/attention_imagery/deeprecon_fmriprep_rep5_500voxel_allunits_fastl2lir_alpha100')
+    trg_decoder_dir = os.path.join(PROJECT_ROOT, 'data/pre-trained/decoders/attention_imagery/deeprecon_fmriprep_rep5_500voxel_allunits_fastl2lir_alpha100')
 
     # Define the list of regions of interest (ROI)
     rois_list = {'VC': 'ROI_VC =1'}

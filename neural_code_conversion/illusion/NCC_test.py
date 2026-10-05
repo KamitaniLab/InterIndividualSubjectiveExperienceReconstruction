@@ -193,7 +193,7 @@ def main(default_trial_mode='averaged'):
 
     data_brain = load_data(brain_dir, subjects_list)
 
-    # Set VGG network and decoder paths
+    # Set caffe network and decoder paths
     network = 'caffe/bvlc_reference_caffenet'
     trg_decoder_dir = os.path.join(PROJECT_ROOT, 'data/pre-trained/decoders/illusion/CaffeNet')
 

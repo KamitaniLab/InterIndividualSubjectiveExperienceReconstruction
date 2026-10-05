@@ -42,139 +42,6 @@ Haibao Wang, Fan L. Cheng, Shuntaro C. Aoki, Misato Tanaka, Yoshihiro Nagano, Hi
 [license-url]: https://github.com/KamitaniLab/InterIndividualSubjectiveExperienceReconstruction/blob/main/LICENSE.txt
 
 
-
-[//]: # (## Repository Structure)
-
-[//]: # ()
-[//]: # (```text)
-
-[//]: # (InterIndividualSubjectiveExperienceReconstruction/)
-
-[//]: # (├── README.md                                  # Project overview and usage instructions)
-
-[//]: # (├── env.yaml                                   # Main Conda environment)
-
-[//]: # (├── figure/)
-
-[//]: # (│   └── NCC.png                                # Overview figure)
-
-[//]: # (├── data/                                      # Data download scripts and organized data folders)
-
-[//]: # (│   ├── README.md                              # Data preparation instructions)
-
-[//]: # (│   ├── download.py                            # Data downloader)
-
-[//]: # (│   ├── files.json                             # Download file metadata)
-
-[//]: # (│   ├── fmri/                                  # fMRI datasets)
-
-[//]: # (│   │   ├── attention/)
-
-[//]: # (│   │   ├── illusion/)
-
-[//]: # (│   │   └── imagery/)
-
-[//]: # (│   ├── pre-trained/                           # Pre-trained decoders and converters)
-
-[//]: # (│   │   ├── converters/)
-
-[//]: # (│   │   └── decoders/)
-
-[//]: # (│   ├── stimulus_feature/                      # DNN stimulus features)
-
-[//]: # (│   └── test_image/                            # Ground truth/test images for evaluation)
-
-[//]: # (│       ├── attention/)
-
-[//]: # (│       ├── illusion/)
-
-[//]: # (│       └── imagery/)
-
-[//]: # (├── neural_code_conversion/                    # Neural code converter training and testing)
-
-[//]: # (│   ├── attention/)
-
-[//]: # (│   │   ├── NCC_train.py                       # Train converters for attention)
-
-[//]: # (│   │   ├── NCC_test.py                        # Test converters for attention)
-
-[//]: # (│   │   └── README.md)
-
-[//]: # (│   ├── illusion/)
-
-[//]: # (│   │   ├── NCC_train.py                       # Train converters for illusion)
-
-[//]: # (│   │   ├── NCC_test.py                        # Test converters for illusion)
-
-[//]: # (│   │   └── README.md)
-
-[//]: # (│   └── imagery/)
-
-[//]: # (│       ├── NCC_train.py                       # Train converters for imagery)
-
-[//]: # (│       ├── NCC_test.py                        # Test converters for imagery)
-
-[//]: # (│       └── README.md)
-
-[//]: # (├── reconstruction/                            # Image reconstruction from decoded features)
-
-[//]: # (│   ├── attention_imagery/)
-
-[//]: # (│   │   ├── recon_icnn_image_gd_dist_attention.py  # Attention reconstruction)
-
-[//]: # (│   │   ├── recon_icnn_image_gd_dist_imagery.py    # Imagery reconstruction)
-
-[//]: # (│   │   ├── env.yaml)
-
-[//]: # (│   │   └── README.md)
-
-[//]: # (│   └── illusion/)
-
-[//]: # (│       ├── recon_feature_to_GAN.py            # Illusion reconstruction with averaged trials)
-
-[//]: # (│       ├── recon_feature_to_GAN_single_trial.py  # Illusion reconstruction for all trials)
-
-[//]: # (│       ├── download.py)
-
-[//]: # (│       └── README.md)
-
-[//]: # (└── evaluation/                                # Quantitative evaluation scripts)
-
-[//]: # (    ├── conversion_accuracy/                   # Neural code conversion accuracy evaluation)
-
-[//]: # (    └── reconstruction_evaluation/             # Reconstruction quality evaluation)
-
-[//]: # (        ├── attention/)
-
-[//]: # (        │   ├── recon_image_eval.py            # Pixel-level attention reconstruction evaluation)
-
-[//]: # (        │   └── recon_image_eval_dnn.py        # DNN-feature attention reconstruction evaluation)
-
-[//]: # (        ├── illusion/)
-
-[//]: # (        │   ├── Eval_color_illusion_vs_control.py  # Color illusion evaluation)
-
-[//]: # (        │   ├── Eval_line_global.py            # Global line-orientation evaluation)
-
-[//]: # (        │   └── Eval_line_local.py             # Local line-orientation evaluation)
-
-[//]: # (        └── imagery/)
-
-[//]: # (            ├── artificial/)
-
-[//]: # (            │   ├── recon_image_eval.py        # Artificial imagery pixel-level evaluation)
-
-[//]: # (            │   └── recon_image_eval_dnn.py    # Artificial imagery DNN-feature evaluation)
-
-[//]: # (            └── natural/)
-
-[//]: # (                ├── recon_image_eval.py        # Natural imagery pixel-level evaluation)
-
-[//]: # (                └── recon_image_eval_dnn.py    # Natural imagery DNN-feature evaluation)
-
-[//]: # (```)
-
-
 ## Getting Started
 
 ### Installation
@@ -196,11 +63,8 @@ Step2: Activate the environment:
 ### Download Data
 
 To use this project, you'll need to download and organize the required data:
-- Download the training brain data for veridical perception from [Figshare](https://figshare.com/articles/dataset/Inter-individual_deep_image_reconstruction/17985578).
-- Download the test brain data for visual illusion from [Figshare](https://figshare.com/articles/dataset/Reconstructing_visual_illusory_experiences_from_human_brain_activity/23590302).
-- Download the test brain data for visual attention from [Figshare](https://figshare.com/articles/dataset/Attentionally_modulated_subjective_images_reconstructed_from_brain_activity/13474629).
-- Download the test brain data for visual imagery from [Figshare](https://figshare.com/articles/dataset/Deep_Image_Reconstruction/7033577).
-- Download the DNN features of stimuli from [Figshare](https://figshare.com/articles/dataset/Inter-individual_and_inter-site_neural_code_conversion/26860954)
+- Download the brain data from [Figshare](https://doi.org/10.6084/m9.figshare.32527710).
+- Download the DNN features of training stimuli from [Figshare](https://figshare.com/articles/dataset/Inter-individual_and_inter-site_neural_code_conversion/26860954)
 
 Alternatively, you can use the following commands to download specific data (The data will be automatically extracted and organized into the designated directory):
  ```sh
